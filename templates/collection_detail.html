@@ -1,0 +1,57 @@
+{% extends 'base_generic.html' %}
+{% block title %}Коллекция: {{ collection.name }}{% endblock %}
+{% block content %}
+{% load static %}
+
+<div class="wrapper">
+    <main class="main">
+        <section class="product">
+            <div class="product__info">
+                <div class="container">
+                    <h1 class="product__title">{{ collection.name }}</h1>
+                    <p>{{ collection.description }}</p>
+                </div>
+            </div>
+            <div> 
+                {% for category in collection.categories.all %}
+                {% endfor %}
+            </div>
+
+            <div class="cards">
+                {% for product in collection.products.all %}
+                <div class="card">
+                    <div class="card__top">
+                        <a href="{% url 'product_detail' product.id %}" class="card__image">
+                            <img src="{{ product.base_image.url }}" alt="{{ product.name }}" />
+                        </a>
+                        <div class="card__label">-{{ product.discount }}%</div>
+                    </div>
+                    <div class="card__bottom">
+                        <div class="card__prices">
+                            <div class="card__price card__price--discount">{{ product.discounted_price }}</div>
+                            <div class="card__price card__price--common">{{ product.price }}</div>
+                        </div>
+                        <a href="{% url 'product_detail' product.id %}" class="card__title">{{ product.name }}</a>
+                        <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="card__add">В корзину</button>
+                        </form>
+                    </div>
+                </div>
+                {% empty %}
+                <p>Нет продуктов в этой коллекции.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <button class="cart" id="cart">
+            <img class="cart__image" src="{% static 'img/korzina.png' %}" alt="Cart" srcset="" />
+            <div class="cart__num" id="cart_num">{{ cart_count }}</div>
+        </button>
+        <div class="popup">
+            <div class="popup__container" id="popup_container">
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
