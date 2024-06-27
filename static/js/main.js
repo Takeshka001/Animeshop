@@ -12,84 +12,6 @@ function toCurrency(num) {
   return format;
 }
 
-// Корзина
-
-const cardAddArr = Array.from(document.querySelectorAll(".card__add"));
-const cartNum = document.querySelector("#cart_num");
-const cart = document.querySelector("#cart");
-
-class Cart {
-  products;
-  constructor() {
-    this.products = [];
-  }
-  get count() {
-    return this.products.length;
-  }
-  addProduct(product) {
-    this.products.push(product);
-  }
-  removeProduct(index) {
-    this.products.splice(index, 1);
-  }
-  get cost() {
-    const prices = this.products.map((product) => {
-      return toNum(product.price);
-    });
-    const sum = prices.reduce((acc, num) => {
-      return acc + num;
-    }, 0);
-    return sum;
-  }
-  get costDiscount() {
-    const prices = this.products.map((product) => {
-      return toNum(product.priceDiscount);
-    });
-    const sum = prices.reduce((acc, num) => {
-      return acc + num;
-    }, 0);
-    return sum;
-  }
-  get discount() {
-    return this.cost - this.costDiscount;
-  }
-}
-
-class Product {
-  imageSrc;
-  name;
-  price;
-  priceDiscount;
-  constructor(card) {
-    this.imageSrc = card.querySelector(".card__image").children[0].src;
-    this.name = card.querySelector(".card__title").innerText;
-    this.price = card.querySelector(".card__price--common").innerText;
-    this.priceDiscount = card.querySelector(".card__price--discount").innerText;
-  }
-}
-
-const myCart = new Cart();
-
-if (localStorage.getItem("cart") == null) {
-  localStorage.setItem("cart", JSON.stringify(myCart));
-}
-
-const savedCart = JSON.parse(localStorage.getItem("cart"));
-myCart.products = savedCart.products;
-cartNum.textContent = myCart.count;
-
-myCart.products = cardAddArr.forEach((cardAdd) => {
-  cardAdd.addEventListener("click", (e) => {
-    e.preventDefault();
-    const card = e.target.closest(".card");
-    const product = new Product(card);
-    const savedCart = JSON.parse(localStorage.getItem("cart"));
-    myCart.products = savedCart.products;
-    myCart.addProduct(product);
-    localStorage.setItem("cart", JSON.stringify(myCart));
-    cartNum.textContent = myCart.count;
-  });
-});
 
 // Попап
 
@@ -169,4 +91,25 @@ popupClose.addEventListener("click", (e) => {
   body.classList.remove("lock");
 });
 
+// script.js 
+document.addEventListener('DOMContentLoaded', function() { 
+  var cartButton = document.getElementById('cart'); 
+  var cartPopup = document.getElementById('cart_popup'); 
+  var popupCloseButton = document.getElementById('popup_close'); 
+ 
+  cartButton.addEventListener('click', function() { 
+      cartPopup.style.display = 'flex'; 
+  }); 
+ 
+  popupCloseButton.addEventListener('click', function() { 
+      cartPopup.style.display = 'none'; 
+  }); 
+ 
+  // Optional: Close the popup when clicking outside of it 
+  window.addEventListener('click', function(event) { 
+      if (event.target == cartPopup) { 
+          cartPopup.style.display = 'none'; 
+      } 
+  }); 
+});
 

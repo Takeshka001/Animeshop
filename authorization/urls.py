@@ -1,10 +1,12 @@
 from django.urls import path
-from .views import CustomerLoginView, home, register, logout_view
+from . import views
+from django.contrib.auth import views as auth_views
 
+app_name = 'auth'
 
 urlpatterns = [
-    path("", home, name="home"),
-    path('register', register, name='register'),
-    path('login/', CustomerLoginView.as_view(), name='login'),  # Проверьте, что путь правильный
-    path('logout/', logout_view, name='logout'),
+    path('profile/', views.profile, name='profile'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
+    path('login/', auth_views.LoginView.as_view(template_name='authorization/login.html'), name='login'),
+    path('register/', views.register, name='register'),  # Новый путь для регистрации
 ]

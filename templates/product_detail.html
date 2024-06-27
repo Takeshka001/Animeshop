@@ -45,18 +45,14 @@
         <div class="gallery">
           <div class="card__images">
             <button class="card__imgs">
-              <button class="card__img" onclick="changeImage('img/card1-1.jpg')">
-                <img src="{% static 'img/card1-1.jpg' %}" alt="" class="card__img">
+              {% for img in product.image.all %}
+              <button class="card__img" onclick="changeImage('{{ img.image.url }}')">
+                <img src="{{ img.image.url }}" alt="" class="card__img">
               </button>
-              <button class="card__img" onclick="changeImage('img/card1-2.jpg')">
-                <img src="{% static 'img/card1-2.jpg' %}" alt="" class="card__img">
-              </button>
-              <button class="card__img" onclick="changeImage('img/card1-3.jpg')">
-                <img src="{% static 'img/card1-3.jpg' %}" alt="" class="card__img">
-              </button>
+              {% endfor %}
           </div>
           <div class="big-img">
-            <img src="{% static 'img/card1-1.jpg' %}" alt="" id="card__img">
+            <img src="{{ product.base_image.url }}" alt="" id="card__img">
           </div>
         </div>
         <div class="product-container">
@@ -87,8 +83,10 @@
               </form> 
               <div class="rating-title"><p>{{ product.rating }} ({{ product.count_reviews }} отзывов)</p></div> 
           </div>
-
-          <button class="btn-card">В корзину</button>
+          <form action="{% url 'add_to_cart' %}" method="post">
+          {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <button class="btn-card">В корзину</button>
           <div class="favorite">
             <li>
               <a href="{% url 'toggle_favorite' product.id %}" class="favorite-btn {% if product_in_favorites %}favorited{% endif %}" data-product-id="{{ product.id }}">

@@ -1,0 +1,48 @@
+{% extends "base_generic.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Profile</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-field">
+            <label for="id_username">Username:</label>
+            <input type="text" name="username" id="id_username" value="{{ form.username.value }}">
+            {% if form.username.errors %}
+            <div class="errorlist">{{ form.username.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-field">
+            <label for="id_email">Email:</label>
+            <input type="email" name="email" id="id_email" value="{{ form.email.value }}">
+            {% if form.email.errors %}
+            <div class="errorlist">{{ form.email.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-field">
+            <label for="id_phone_number">Phone Number:</label>
+            <input type="text" name="phone_number" id="id_phone_number" value="{{ form.phone_number.value }}">
+            {% if form.phone_number.errors %}
+            <div class="errorlist">{{ form.phone_number.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-field">
+            <label for="id_city">City:</label>
+            <input type="text" name="city" id="id_city" value="{{ form.city.value }}">
+            {% if form.city.errors %}
+            <div class="errorlist">{{ form.city.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-field">
+            <label for="id_country">Country:</label>
+            <input type="text" name="country" id="id_country" value="{{ form.country.value }}">
+            {% if form.country.errors %}
+            <div class="errorlist">{{ form.country.errors }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="button">Save</button>
+    </form>
+</div>
+{% endblock %}

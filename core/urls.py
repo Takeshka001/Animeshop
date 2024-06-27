@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from authorization import views as authorization_views
 
 
 urlpatterns = [
@@ -25,9 +26,10 @@ urlpatterns = [
     path('auth/', include('authorization.urls')),
     path('', include('mainapp.urls')),
     path('products/', include('products.urls')),
-    path('cart/', include('cart.urls', namespace='cart')),
+    path('cart/', include('cart.urls')),
+    path('authorization/', include('authorization.urls', namespace='auth')),
+    path('', authorization_views.home, name='home')
     
-
     
     ]
 

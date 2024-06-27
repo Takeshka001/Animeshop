@@ -1,8 +1,11 @@
 {% extends 'base_generic.html' %}
-{% block title %}Каталог{% endblock %}
-{% block content %}
 {% load static %}
+{% load cart_tags %}
 
+{% block title %}Каталог{% endblock %}
+
+
+{% block content %}
 <div class="wrapper">
     <main class="main">
         <section class="product">
@@ -49,7 +52,6 @@
                             <div class="card__price card__price--common">{{ product.price }}</div>
                         </div>
                         <a href="{% url 'product_detail' product.id %}" class="card__title">{{ product.name }}</a>
-                        <form method="POST" action="{% url 'cart:add_to_cart' product.id %}">
                             {% csrf_token %}
                             <button type="submit" class="card__add">В корзину</button>
                         </form>
@@ -61,16 +63,7 @@
             </div>
         </section>
 
-        <!-- Всплывающее окно корзины (если нужно) -->
-        <button class="cart" id="cart">
-            <img class="cart__image" src="{% static 'img/korzina.png' %}" alt="Cart" srcset="" />
-            <div class="cart__num" id="cart_num">{{ cart_count }}</div>
-        </button>
-        <div class="popup">
-            <div class="popup__container" id="popup_container">
-                <!-- Содержимое корзины -->
-            </div>
-        </div>
+        {% show_cart %}
     </main>
 </div>
 {% endblock %}

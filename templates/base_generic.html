@@ -12,13 +12,13 @@
 <body>
     <header>
         <div class="logo"> 
-            <a href="{% url 'index' %}" class="logo">
+            <a href="{% url 'home' %}" class="logo">
                 <img src="{% static 'img/logo.png' %}" alt="">
             </a>
         </div>
         <nav class="menu">
             <ul class="menu_list">
-                <li><a href="{% url 'index' %}">Главная</a></li>
+                <li><a href="{% url 'home' %}">Главная</a></li>
                 <li><a href="#">Акции</a></li>
                 <li><a href="{% url 'collection' %}">Коллекции</a></li>
                 <li><a href="{% url 'catalog' %}">Каталог</a></li>
@@ -29,16 +29,28 @@
             <ul class="icon_list">
                 <li><a href="{% url 'favorites' %}">
                     <img src="{% static 'img/izbr.png' %}" alt="" class="icon_img" id="favorite-icon">
-                  </a></li>
-                <li><a href="#">
+                </a></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'auth:profile' %}">
                     <img src="{% static 'img/akk.png' %}" alt="" class="icon_img">
                 </a></li>
+                <li>
+                    <form method="post" action="{% url 'auth:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" style="background:none;border:none;color:inherit;padding:0;cursor:pointer;">
+                            Logout
+                        </button>
+                    </form>
+                </li>
+                {% else %}
+                <li><a href="{% url 'auth:login' %}">Login</a></li>
+                {% endif %}
             </ul>
         </div>
     </header>
-        {% block content %}
-        <!-- Content will be injected here -->
-        {% endblock %}
+    {% block content %}
+    <!-- Content will be injected here -->
+    {% endblock %}
     <footer>
         <div class="container">
             <nav class="footer_menu">
